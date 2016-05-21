@@ -1,0 +1,41 @@
+apply plugin: 'com.android.application'
+apply plugin: 'de.mobilej.unmock'
+
+unMock {
+    // URI to download the android-all.jar from. e.g. https://oss.sonatype.org/content/groups/public/org/robolectric/android-all/
+    downloadFrom 'https://oss.sonatype.org/content/groups/public/org/robolectric/android-all/6.0.0_r1-robolectric-0/android-all-6.0.0_r1-robolectric-0.jar'
+
+    keep "android.os.Parcel"
+    keep "android.os.ParcelFileDescriptor"
+    keep "android.os.Bundle"
+    keep "android.os.PersistableBundle"
+    keepStartingWith "com.android.internal.util.XmlUtils"
+
+    keepAndRename "java.util.Arrays" to "xjava.util.Arrays"
+}
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "eu.rekisoft.android.parcelableproblem"
+        minSdkVersion 9
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.powermock:powermock-api-mockito:1.6.1'
+    testCompile 'org.powermock:powermock-module-junit4:1.6.1'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+}
